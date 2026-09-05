@@ -333,16 +333,16 @@ function PageThree({
               onClick={(e) => {
                 if (isPopped) return;
                 burstAt(e.currentTarget);
-                setMsg(text);
-                setPopped((p) => {
-                  const next = [...p, i];
-                  if (next.length === 9) {
-                    setMsg("MISSION COMPLETE. 9/9 balloons defeated. 🏅");
-                    onWin();
-                  }
-                  return next;
-                });
+                const next = [...popped, i];
+                setPopped(next);
+                if (next.length === 9) {
+                  setMsg("MISSION COMPLETE. 9/9 balloons defeated. 🏅");
+                  onWin();
+                } else {
+                  setMsg(text);
+                }
               }}
+
             >
               {i + 1}
             </button>
