@@ -29,14 +29,11 @@ export const Route = createFileRoute("/")({
 const TOTAL_PAGES = 8;
 
 type Burst = { id: number; x: number; y: number; char: string; color: string; dx: number; dy: number };
-type Confetti = { id: number; left: number; delay: number; size: number; char: string; color: string; dur: number };
 
-const CONFETTI_CHARS = ["🎉", "🎈", "✨", "🍰", "💖", "⭐", "🎊", "🥳"];
 const CONFETTI_COLORS = ["#ff3f78", "#7040d9", "#ffd85c", "#4d9de0", "#5fc98a"];
 
 function BirthdayApp() {
   const [page, setPage] = useState(1);
-  const [confetti, setConfetti] = useState<Confetti[]>([]);
   const [bursts, setBursts] = useState<Burst[]>([]);
   const idRef = useRef(0);
   const topRef = useRef<HTMLDivElement | null>(null);
@@ -45,24 +42,6 @@ function BirthdayApp() {
     if (n < 1 || n > TOTAL_PAGES) return;
     setPage(n);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  const launchConfetti = useCallback((count = 90) => {
-    const pieces: Confetti[] = Array.from({ length: count }, () => {
-      idRef.current += 1;
-      return {
-        id: idRef.current,
-        left: Math.random() * 100,
-        delay: Math.random() * 0.8,
-        size: 14 + Math.random() * 22,
-        char: CONFETTI_CHARS[Math.floor(Math.random() * CONFETTI_CHARS.length)]!,
-        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]!,
-        dur: 2.6 + Math.random() * 1.6,
-      };
-    });
-    setConfetti((c) => [...c, ...pieces]);
-    const ids = new Set(pieces.map((p) => p.id));
-    window.setTimeout(() => setConfetti((c) => c.filter((p) => !ids.has(p.id))), 5000);
   }, []);
 
   const burstAt = useCallback((el: HTMLElement, chars = ["★", "✦", "💥", "🎈", "✨"]) => {
@@ -99,25 +78,6 @@ function BirthdayApp() {
         <span className="bd-float f7">🎈</span>
       </div>
 
-      {/* confetti layer */}
-      <div className="bd-confetti" aria-hidden="true">
-        {confetti.map((p) => (
-          <span
-            key={p.id}
-            className="bd-confetti-piece"
-            style={{
-              left: `${p.left}vw`,
-              fontSize: `${p.size}px`,
-              color: p.color,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.dur}s`,
-            }}
-          >
-            {p.char}
-          </span>
-        ))}
-      </div>
-
       {/* click bursts */}
       <div className="bd-bursts" aria-hidden="true">
         {bursts.map((b) => (
@@ -147,20 +107,13 @@ function BirthdayApp() {
 
       <main>
         {page === 1 && <PageOne goTo={goTo} />}
-        {page === 2 && <PageTwo goTo={goTo} onWin={() => launchConfetti(35)} />}
-        {page === 3 && <PageThree goTo={goTo} burstAt={burstAt} onWin={() => launchConfetti(45)} />}
-        {page === 4 && <PageFour goTo={goTo} onBest={() => launchConfetti(70)} />}
+        {page === 2 && <PageTwo goTo={goTo} />}
+        {page === 3 && <PageThree goTo={goTo} burstAt={burstAt} />}
+        {page === 4 && <PageFour goTo={goTo} />}
         {page === 5 && <PageFive goTo={goTo} />}
         {page === 6 && <PageSix goTo={goTo} />}
-        {page === 7 && (
-          <PageSeven
-            onClick={() => {
-              goTo(8);
-              launchConfetti(140);
-            }}
-          />
-        )}
-        {page === 8 && <PageEight onCake={launchConfetti} />}
+        {page === 7 && <PageSeven onClick={() => goTo(8)} />}
+        {page === 8 && <PageEight />}
       </main>
     </div>
   );
