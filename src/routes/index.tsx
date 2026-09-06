@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import bearGiggle from "@/assets/bear-giggle.png";
+import bearHeart from "@/assets/bear-heart.png";
+import bearParty from "@/assets/bear-party.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -490,9 +493,18 @@ function PageFive({ goTo }: { goTo: (n: number) => void }) {
 function PageSix({ goTo }: { goTo: (n: number) => void }) {
   return (
     <section className="bd-page p6">
-      <span className="bd-emoji-rain e1">💖</span>
-      <span className="bd-emoji-rain e2">🎀</span>
-      <span className="bd-emoji-rain e3">✨</span>
+      <div className="bd-wish-rain" aria-hidden="true">
+        {['💖', '🎀', '✨', '🌸', '💌', '⭐', '🫶'].map((emoji, index) => (
+          <span key={`${emoji}-${index}`} style={{ '--rain-index': index } as React.CSSProperties}>
+            {emoji}
+          </span>
+        ))}
+      </div>
+
+      <img className="bd-wish-bear bear-giggle" src={bearGiggle} alt="A cute giggling white bear" width={768} height={768} />
+      <img className="bd-wish-bear bear-heart" src={bearHeart} alt="A cute teddy bear holding a heart" width={768} height={768} />
+      <img className="bd-wish-bear bear-party" src={bearParty} alt="A funny party panda dancing" width={768} height={768} />
+
       <p className="bd-eyebrow">💌 THE SERIOUS PART</p>
       <h1 className="bd-script">Happy Birthday, Zainab! 🎉</h1>
 
@@ -510,11 +522,11 @@ function PageSix({ goTo }: { goTo: (n: number) => void }) {
       <div className="bd-letter">
         <p>Today is officially your day, so the investigation is temporarily suspended:</p>
         <p>
-          You are not just my best friend you are my person my therapist my entertainment my partner in
-          crime and my daily dose of fight 🥰🥳.
+          You are not just my best friend; you are my person, my therapist, my entertainment, my partner in
+          crime, and my daily dose of fight. 🥰🥳
         </p>
-        <p>Thanks for being you , for all laughs the craziness and endless memories. 💓</p>
-        <p>I hope I shall be best friend you in every life.</p>
+        <p>Thanks for being you—for all the laughs, the craziness, and the endless memories. 💓</p>
+        <p>I hope I shall be your best friend in every life.</p>
       </div>
 
       <div className="bd-ribbon">You deserve all the happiness in the world! ⭐</div>
