@@ -493,14 +493,6 @@ function PageFive({ goTo }: { goTo: (n: number) => void }) {
 function PageSix({ goTo }: { goTo: (n: number) => void }) {
   return (
     <section className="bd-page p6">
-      <div className="bd-wish-rain" aria-hidden="true">
-        {['💖', '🎀', '✨', '🌸', '💌', '⭐', '🫶'].map((emoji, index) => (
-          <span key={`${emoji}-${index}`} style={{ '--rain-index': index } as React.CSSProperties}>
-            {emoji}
-          </span>
-        ))}
-      </div>
-
       <img className="bd-wish-bear bear-giggle" src={bearGiggle} alt="A cute giggling white bear" width={768} height={768} loading="lazy" />
       <img className="bd-wish-bear bear-heart" src={bearHeart} alt="A cute teddy bear holding a heart" width={768} height={768} loading="lazy" />
       <img className="bd-wish-bear bear-party" src={bearParty} alt="A funny party panda dancing" width={768} height={768} loading="lazy" />
