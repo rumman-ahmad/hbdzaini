@@ -427,7 +427,7 @@
   .p6 .bd-script { max-width: 82%; margin-bottom: 8px; }
   .bd-wish-bear { width: 76px; }
   .bd-wish-bear.bear-giggle { left: -12px; top: 13%; }
-  .bd-wish-bear.bear-heart { right: -16px; top: 43%; }
+  .bd-wish-bear.bear-heart { right: -16px; top: 31%; }
   .bd-wish-bear.bear-party { left: -10px; bottom: 5%; }
   .bd-letter { width: calc(100% - 34px); padding: 10px 8px; font-size: 0.96rem; line-height: 1.65; }
 }
