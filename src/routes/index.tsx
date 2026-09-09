@@ -507,7 +507,7 @@ function PageEight() {
       <div className="bd-banner">HAPPY BIRTHDAY</div>
       <h1 className="bd-pop-name">ZAINAB! 🥳</h1>
 
-      <button className="bd-cake" onClick={() => onCake(80)} aria-label="Tap the cake for confetti">
+      <button className="bd-cake" aria-label="A birthday cake with a candle">
         <span className="bd-flame" />
         <span className="bd-candle" />
         <span className="bd-cake-top" />
