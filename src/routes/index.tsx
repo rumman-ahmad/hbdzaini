@@ -266,6 +266,7 @@ function PageThree({
 }) {
   const [popped, setPopped] = useState<number[]>([]);
   const [msg, setMsg] = useState("POP THEM ALL 🎈");
+  const [msgKey, setMsgKey] = useState(0);
   const all = popped.length === 9;
 
   return (
@@ -286,6 +287,7 @@ function PageThree({
                 burstAt(e.currentTarget);
                 const next = [...popped, i];
                 setPopped(next);
+                setMsgKey((key) => key + 1);
                 if (next.length === 9) {
                   setMsg("MISSION COMPLETE. 9/9 balloons defeated. 🏅");
                 } else {
@@ -300,7 +302,14 @@ function PageThree({
         })}
       </div>
 
-      <div className="bd-big-reaction">{msg}</div>
+      <div
+        key={msgKey}
+        className={`bd-big-reaction ${msgKey > 0 ? "show" : ""}`}
+        role="status"
+        aria-live="polite"
+      >
+        {msg}
+      </div>
       <p className="bd-tiny">{popped.length}/9 popped</p>
       {all && (
         <button className="bd-btn bd-jelly" onClick={() => goTo(4)}>
@@ -497,6 +506,15 @@ function PageSeven({ onClick }: { onClick: () => void }) {
 
 /* ---------------- Page 8 ---------------- */
 function PageEight() {
+  const [cakeTaps, setCakeTaps] = useState(0);
+  const cakeLines = [
+    "HEY! That tickles! 😂",
+    "Careful—I'm emotionally layered! 🍰",
+    "OW! Make a wish first! 😤",
+    "Okay, okay... you win, birthday girl! 🥳",
+  ];
+  const cakeLine = cakeTaps === 0 ? "tap the cake 🎂" : cakeLines[(cakeTaps - 1) % cakeLines.length];
+
   return (
     <section className="bd-page p8">
       <div className="bd-buntings" aria-hidden="true">
@@ -507,13 +525,21 @@ function PageEight() {
       <div className="bd-banner">HAPPY BIRTHDAY</div>
       <h1 className="bd-pop-name">ZAINAB! 🥳</h1>
 
-      <button className="bd-cake" aria-label="A birthday cake with a candle">
+      <button
+        key={cakeTaps}
+        className={`bd-cake ${cakeTaps > 0 ? "tapped" : ""}`}
+        aria-label="Tap the funny birthday cake"
+        onClick={() => setCakeTaps((count) => count + 1)}
+      >
         <span className="bd-flame" />
         <span className="bd-candle" />
         <span className="bd-cake-top" />
         <span className="bd-cake-body" />
+        <span className="bd-cake-face" aria-hidden="true">•ᴗ•</span>
       </button>
-      <p className="bd-tiny">tap the cake 🎂</p>
+      <p key={`cake-line-${cakeTaps}`} className={`bd-cake-reaction ${cakeTaps > 0 ? "show" : ""}`} aria-live="polite">
+        {cakeLine}
+      </p>
 
       <div className="bd-final-notes">
         <div>
