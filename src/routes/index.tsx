@@ -187,18 +187,15 @@ const QUESTIONS = [
   },
 ];
 
-function PageTwo({ goTo, onWin }: { goTo: (n: number) => void; onWin: () => void }) {
+function PageTwo({ goTo }: { goTo: (n: number) => void }) {
   const [done, setDone] = useState<boolean[]>([false, false, false]);
   const [shake, setShake] = useState<number | null>(null);
   const [msg, setMsg] = useState("Answer all three correctly to continue.");
   const solved = done.every(Boolean);
 
   useEffect(() => {
-    if (solved) {
-      setMsg("VERIFICATION PASSED. Zainab has officially been identified. ✅");
-      onWin();
-    }
-  }, [solved, onWin]);
+    if (solved) setMsg("VERIFICATION PASSED. Zainab has officially been identified. ✅");
+  }, [solved]);
 
   return (
     <section className="bd-page p2">
@@ -263,11 +260,9 @@ const BALLOONS = [
 function PageThree({
   goTo,
   burstAt,
-  onWin,
 }: {
   goTo: (n: number) => void;
   burstAt: (el: HTMLElement) => void;
-  onWin: () => void;
 }) {
   const [popped, setPopped] = useState<number[]>([]);
   const [msg, setMsg] = useState("POP THEM ALL 🎈");
@@ -293,7 +288,6 @@ function PageThree({
                 setPopped(next);
                 if (next.length === 9) {
                   setMsg("MISSION COMPLETE. 9/9 balloons defeated. 🏅");
-                  onWin();
                 } else {
                   setMsg(text);
                 }
@@ -325,7 +319,7 @@ const FRIEND: Record<string, { label: string; letter: string; msg: string }> = {
   best: { letter: "D", label: "Bestest", msg: "CORRECT ANSWER DETECTED. RUMMAN HAS BEEN CLEARED. 😎" },
 };
 
-function PageFour({ goTo, onBest }: { goTo: (n: number) => void; onBest: () => void }) {
+function PageFour({ goTo }: { goTo: (n: number) => void }) {
   const [picked, setPicked] = useState<string | null>(null);
   const [flash, setFlash] = useState(0);
 
@@ -343,7 +337,6 @@ function PageFour({ goTo, onBest }: { goTo: (n: number) => void; onBest: () => v
             onClick={() => {
               setPicked(key);
               setFlash((f) => f + 1);
-              if (key === "best") onBest();
             }}
           >
             <b>{item.letter}</b>
@@ -503,11 +496,7 @@ function PageSeven({ onClick }: { onClick: () => void }) {
 }
 
 /* ---------------- Page 8 ---------------- */
-function PageEight({ onCake }: { onCake: (n?: number) => void }) {
-  useEffect(() => {
-    onCake(60);
-  }, [onCake]);
-
+function PageEight() {
   return (
     <section className="bd-page p8">
       <div className="bd-buntings" aria-hidden="true">
@@ -518,7 +507,7 @@ function PageEight({ onCake }: { onCake: (n?: number) => void }) {
       <div className="bd-banner">HAPPY BIRTHDAY</div>
       <h1 className="bd-pop-name">ZAINAB! 🥳</h1>
 
-      <button className="bd-cake" onClick={() => onCake(80)} aria-label="Tap the cake for confetti">
+      <button className="bd-cake" aria-label="A birthday cake with a candle">
         <span className="bd-flame" />
         <span className="bd-candle" />
         <span className="bd-cake-top" />
