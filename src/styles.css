@@ -202,7 +202,10 @@
 }
 @keyframes bdStamp { from { opacity: 0; transform: scale(2.2); } 70% { opacity: 1; transform: scale(0.9); } to { transform: none; } }
 .bd-login-kicker { margin: 0; color: oklch(0.48 0.07 300); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.16em; }
-.bd-login-lock { width: 64px; height: 64px; display: grid; place-items: center; margin: 10px auto 4px; font-size: 2.4rem; animation: bdLockLook 2.6s ease-in-out infinite; }
+.bd-login-lock { width: 64px; height: 64px; position: relative; margin: 10px auto 4px; animation: bdLockLook 2.6s ease-in-out infinite; }
+.bd-login-lock::before { content: ""; position: absolute; left: 18px; top: 6px; width: 28px; height: 27px; border: 6px solid var(--bd-ink); border-bottom: 0; border-radius: 15px 15px 0 0; }
+.bd-login-lock span { position: absolute; left: 12px; bottom: 5px; width: 40px; height: 33px; border: 3px solid var(--bd-ink); border-radius: 7px; background: var(--bd-yellow); box-shadow: 3px 3px 0 var(--bd-ink); }
+.bd-login-lock span::after { content: ""; position: absolute; left: 16px; top: 9px; width: 4px; height: 11px; border-radius: 2px; background: var(--bd-ink); }
 @keyframes bdLockLook { 0%,100% { transform: rotate(-5deg) scale(1); } 50% { transform: rotate(6deg) scale(1.08); } }
 .bd-login h1 { margin: 4px 0 8px; font-size: clamp(1.8rem, 8vw, 2.8rem); line-height: 1; }
 .bd-login-copy { max-width: 350px; margin: 0 auto 22px; line-height: 1.5; font-weight: 700; }

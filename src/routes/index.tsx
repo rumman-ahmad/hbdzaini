@@ -107,7 +107,7 @@ function BirthdayApp() {
         <section className="bd-login-panel" aria-labelledby="access-title">
           <div className="bd-login-stamp">TOP SECRET</div>
           <p className="bd-login-kicker">CASE NO. 15·09·08</p>
-          <div className="bd-login-lock" aria-hidden="true">🔐</div>
+          <div className="bd-login-lock" aria-hidden="true"><span /></div>
           <h1 id="access-title">IDENTITY CHECK</h1>
           <p className="bd-login-copy">Enter your date of birth to access the investigation file.</p>
 
