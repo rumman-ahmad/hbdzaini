@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import bearGiggle from "@/assets/bear-giggle.png";
 import bearHeart from "@/assets/bear-heart.png";
 import bearParty from "@/assets/bear-party.png";
+import { getBirthdayAccess, unlockBirthday } from "@/lib/birthday-access.functions";
 
 export const Route = createFileRoute("/")({
+  loader: () => getBirthdayAccess(),
   head: () => ({
     meta: [
       { title: "Zainab's Birthday Investigation — A Top Secret Surprise" },
@@ -23,6 +26,8 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  errorComponent: BirthdayAccessError,
+  notFoundComponent: BirthdayAccessError,
   component: BirthdayApp,
 });
 
@@ -33,6 +38,11 @@ type Burst = { id: number; x: number; y: number; char: string; color: string; dx
 const CONFETTI_COLORS = ["#ff3f78", "#7040d9", "#ffd85c", "#4d9de0", "#5fc98a"];
 
 function BirthdayApp() {
+  const initialAccess = Route.useLoaderData();
+  const unlock = useServerFn(unlockBirthday);
+  const [unlocked, setUnlocked] = useState(initialAccess.unlocked);
+  const [unlocking, setUnlocking] = useState(false);
+  const [accessError, setAccessError] = useState("");
   const [page, setPage] = useState(1);
   const [bursts, setBursts] = useState<Burst[]>([]);
   const idRef = useRef(0);
@@ -62,6 +72,86 @@ function BirthdayApp() {
     const ids = new Set(pieces.map((p) => p.id));
     window.setTimeout(() => setBursts((b) => b.filter((p) => !ids.has(p.id))), 800);
   }, []);
+
+  async function handleUnlock(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAccessError("");
+    setUnlocking(true);
+
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") ?? "");
+    const dateOfBirth = String(form.get("dateOfBirth") ?? "");
+
+    try {
+      const result = await unlock({ data: { name, dateOfBirth } });
+      if (!result.ok) {
+        setAccessError("ACCESS DENIED! The birthday detectives could not verify those details. Try again, suspect. 🧐");
+        setUnlocking(false);
+        return;
+      }
+
+      window.setTimeout(() => setUnlocked(true), 850);
+    } catch {
+      setAccessError("The investigation machine hiccupped. Please try again.");
+      setUnlocking(false);
+    }
+  }
+
+  if (!unlocked) {
+    return (
+      <main className={`bd-login ${unlocking ? "is-unlocking" : ""}`}>
+        <div className="bd-login-beam" aria-hidden="true" />
+        <img className="bd-login-bear bear-peek" src={bearGiggle} alt="" width={768} height={768} />
+        <img className="bd-login-bear bear-guard" src={bearHeart} alt="" width={768} height={768} />
+
+        <section className="bd-login-panel" aria-labelledby="access-title">
+          <div className="bd-login-stamp">TOP SECRET</div>
+          <p className="bd-login-kicker">CASE NO. 15·09·08</p>
+          <div className="bd-login-lock" aria-hidden="true">🔐</div>
+          <h1 id="access-title">IDENTITY CHECK</h1>
+          <p className="bd-login-copy">Enter your date of birth to access the investigation file.</p>
+
+          <form className="bd-login-form" onSubmit={handleUnlock}>
+            <label htmlFor="birthday-name">Suspect&apos;s full name</label>
+            <input
+              id="birthday-name"
+              name="name"
+              type="text"
+              placeholder="e.g. Zainab Imran"
+              autoComplete="name"
+              maxLength={80}
+              required
+              disabled={unlocking}
+            />
+
+            <label htmlFor="birthday-dob">Date of birth</label>
+            <input
+              id="birthday-dob"
+              name="dateOfBirth"
+              type="text"
+              inputMode="numeric"
+              placeholder="DD-MM-YYYY (e.g. 01-01-2000)"
+              autoComplete="bday"
+              maxLength={20}
+              required
+              disabled={unlocking}
+              aria-describedby="birthday-format birthday-access-error"
+            />
+            <small id="birthday-format">Dashes are optional. Detective hats are encouraged.</small>
+
+            <p id="birthday-access-error" className={`bd-login-error ${accessError ? "show" : ""}`} role="alert">
+              {accessError}
+            </p>
+
+            <button className="bd-btn bd-login-submit" type="submit" disabled={unlocking}>
+              {unlocking ? "UNLOCKING FILE... 🔎" : "ACCESS INVESTIGATION FILE 🔍"}
+            </button>
+          </form>
+          <p className="bd-login-warning">⚠ Authorized birthday girl only. Intruders will be dramatically judged.</p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <div className="bd-root">
@@ -116,6 +206,18 @@ function BirthdayApp() {
         {page === 8 && <PageEight />}
       </main>
     </div>
+  );
+}
+
+function BirthdayAccessError() {
+  return (
+    <main className="bd-login">
+      <section className="bd-login-panel">
+        <div className="bd-login-lock" aria-hidden="true">🕵️</div>
+        <h1>CASE FILE TEMPORARILY LOST</h1>
+        <p className="bd-login-copy">The detective desk needs a moment. Please refresh and try again.</p>
+      </section>
+    </main>
   );
 }
 
