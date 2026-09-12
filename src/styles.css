@@ -166,6 +166,72 @@
 }
 .bd-root * { box-sizing: border-box; }
 
+/* private entrance */
+.bd-login {
+  min-height: 100svh; position: relative; overflow: hidden; display: grid; place-items: center;
+  padding: 34px 18px; color: var(--bd-ink); font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 15%, oklch(0.96 0.08 92), transparent 30%),
+    linear-gradient(145deg, oklch(0.95 0.04 350), oklch(0.87 0.09 300));
+}
+.bd-login::before, .bd-login::after {
+  content: "CONFIDENTIAL"; position: absolute; color: oklch(0.49 0.2 5 / 0.1); font-size: clamp(3rem, 12vw, 8rem);
+  font-weight: 900; border: 10px double currentColor; padding: 4px 20px; rotate: -18deg; pointer-events: none;
+}
+.bd-login::before { left: -6%; top: 10%; }
+.bd-login::after { right: -8%; bottom: 8%; rotate: 13deg; }
+.bd-login-beam {
+  position: absolute; inset: -50%; opacity: 0.36; pointer-events: none;
+  background: conic-gradient(from 90deg, transparent 0 42%, oklch(1 0 0 / 0.75) 48% 52%, transparent 58% 100%);
+  animation: bdSearchlight 8s linear infinite;
+}
+@keyframes bdSearchlight { to { transform: rotate(360deg); } }
+.bd-login-panel {
+  position: relative; z-index: 3; width: min(470px, 100%); padding: 34px clamp(20px, 6vw, 42px) 28px;
+  text-align: center; background: oklch(0.985 0.012 90); border: 3px solid var(--bd-ink); border-radius: 8px;
+  box-shadow: 9px 11px 0 var(--bd-ink), 0 26px 60px oklch(0.3 0.08 300 / 0.25);
+  animation: bdFileDrop 0.7s cubic-bezier(0.18, 0.85, 0.25, 1) both;
+}
+@keyframes bdFileDrop { from { opacity: 0; transform: translateY(-30px) rotate(-3deg) scale(0.92); } to { opacity: 1; transform: none; } }
+.bd-login-panel::before {
+  content: ""; position: absolute; width: 92px; height: 24px; left: 50%; top: -14px; translate: -50% 0;
+  background: oklch(0.9 0.04 88 / 0.9); rotate: -2deg; box-shadow: 0 2px 3px oklch(0.3 0.03 80 / 0.2);
+}
+.bd-login-stamp {
+  position: absolute; right: 18px; top: 24px; color: var(--bd-pink-deep); border: 3px double currentColor;
+  padding: 5px 7px; font-size: 0.66rem; font-weight: 900; rotate: 8deg; animation: bdStamp 0.6s 0.45s both;
+}
+@keyframes bdStamp { from { opacity: 0; transform: scale(2.2); } 70% { opacity: 1; transform: scale(0.9); } to { transform: none; } }
+.bd-login-kicker { margin: 0; color: oklch(0.48 0.07 300); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.16em; }
+.bd-login-lock { width: 64px; height: 64px; position: relative; margin: 10px auto 4px; animation: bdLockLook 2.6s ease-in-out infinite; }
+.bd-login-lock::before { content: ""; position: absolute; left: 18px; top: 6px; width: 28px; height: 27px; border: 6px solid var(--bd-ink); border-bottom: 0; border-radius: 15px 15px 0 0; }
+.bd-login-lock span { position: absolute; left: 12px; bottom: 5px; width: 40px; height: 33px; border: 3px solid var(--bd-ink); border-radius: 7px; background: var(--bd-yellow); box-shadow: 3px 3px 0 var(--bd-ink); }
+.bd-login-lock span::after { content: ""; position: absolute; left: 16px; top: 9px; width: 4px; height: 11px; border-radius: 2px; background: var(--bd-ink); }
+@keyframes bdLockLook { 0%,100% { transform: rotate(-5deg) scale(1); } 50% { transform: rotate(6deg) scale(1.08); } }
+.bd-login h1 { margin: 4px 0 8px; font-size: clamp(1.8rem, 8vw, 2.8rem); line-height: 1; }
+.bd-login-copy { max-width: 350px; margin: 0 auto 22px; line-height: 1.5; font-weight: 700; }
+.bd-login-form { display: grid; gap: 8px; text-align: left; }
+.bd-login-form label { margin-top: 8px; font-size: 0.78rem; font-weight: 900; text-transform: uppercase; }
+.bd-login-form input {
+  width: 100%; min-height: 50px; padding: 12px 14px; color: var(--bd-ink); background: oklch(1 0 0);
+  border: 2px solid oklch(0.67 0.06 300); border-radius: 8px; outline: none; font: inherit; font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.bd-login-form input:focus { border-color: var(--bd-pink); box-shadow: 0 0 0 4px oklch(0.62 0.24 5 / 0.15); transform: translateY(-1px); }
+.bd-login-form input::placeholder { color: oklch(0.56 0.03 300); }
+.bd-login-form small { color: oklch(0.46 0.04 300); font-size: 0.72rem; }
+.bd-login-error { min-height: 0; margin: 4px 0 0; color: oklch(0.47 0.2 25); font-size: 0.8rem; font-weight: 900; text-align: center; }
+.bd-login-error.show { min-height: 38px; padding: 8px; background: oklch(0.92 0.06 25); border: 2px dashed oklch(0.59 0.18 25); animation: bdShake 0.4s; }
+.bd-login-submit { width: 100%; min-height: 54px; margin-top: 8px; }
+.bd-login-submit:disabled { cursor: wait; opacity: 0.82; }
+.bd-login-warning { margin: 20px 0 0; font-size: 0.68rem; font-weight: 800; opacity: 0.72; }
+.bd-login-bear { position: absolute; z-index: 4; width: clamp(92px, 15vw, 170px); pointer-events: none; filter: drop-shadow(0 10px 10px oklch(0.35 0.08 300 / 0.18)); }
+.bd-login-bear.bear-peek { left: max(2%, calc(50% - 350px)); bottom: 7%; rotate: -8deg; animation: bdBearPeek 4.2s ease-in-out infinite; }
+.bd-login-bear.bear-guard { right: max(2%, calc(50% - 360px)); top: 8%; rotate: 8deg; animation: bdBearFloat 3.8s ease-in-out infinite; }
+.bd-login.is-unlocking .bd-login-panel { animation: bdUnlock 0.9s ease both; }
+.bd-login.is-unlocking .bd-login-lock { animation: bdUnlockIcon 0.7s ease-in-out infinite; }
+@keyframes bdUnlock { 45% { transform: rotate(-2deg) scale(1.03); box-shadow: 13px 16px 0 var(--bd-ink); } to { opacity: 0; transform: scale(1.12); } }
+@keyframes bdUnlockIcon { 50% { transform: rotate(12deg) scale(1.18); } }
+
 .bd-page {
   min-height: 100vh;
   padding: 60px 6vw 60px;
@@ -422,6 +488,13 @@
 .bd-signature { margin-top: 14px; font-weight: 900; font-size: 1.2rem; color: var(--bd-yellow); }
 
 @media (max-width: 650px) {
+  .bd-login { padding: 30px 16px; align-items: center; }
+  .bd-login-panel { padding: 30px 20px 24px; box-shadow: 6px 7px 0 var(--bd-ink); }
+  .bd-login-stamp { right: 10px; top: 18px; font-size: 0.56rem; }
+  .bd-login-bear { width: 82px; z-index: 2; }
+  .bd-login-bear.bear-peek { left: -18px; bottom: 1%; }
+  .bd-login-bear.bear-guard { right: -14px; top: 2%; }
+  .bd-login::before, .bd-login::after { font-size: 3rem; border-width: 6px; }
   .bd-float { font-size: 0.55rem; padding: 5px 8px; border-width: 2px; box-shadow: 2px 3px 0 var(--bd-ink); }
   .bd-float.f1 { left: 1%; top: 16%; } .bd-float.f2 { right: 1%; top: 28%; }
   .bd-float.f3 { left: 1%; bottom: 16%; } .bd-float.f4 { right: 1%; bottom: 14%; }
