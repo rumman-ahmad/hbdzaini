@@ -7,7 +7,7 @@ import bearParty from "@/assets/bear-party.png";
 import { getBirthdayAccess, unlockBirthday } from "@/lib/birthday-access.functions";
 
 export const Route = createFileRoute("/")({
-  loader: () => getBirthdayAccess(),
+  loader: () => ({ unlocked: false }),
   head: () => ({
     meta: [
       { title: "Zainab's Birthday Investigation — A Top Secret Surprise" },

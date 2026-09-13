@@ -28,7 +28,7 @@ function safeMatch(value: string, expected: string) {
   return timingSafeEqual(valueHash, expectedHash);
 }
 
-export const getBirthdayAccess = createServerFn({ method: "GET" }).handler(async () => {
+export const getBirthdayAccess = createServerFn({ method: "POST" }).handler(async () => {
   const session = await useSession<BirthdaySession>(sessionOptions());
   return { unlocked: session.data.unlocked === true };
 });
