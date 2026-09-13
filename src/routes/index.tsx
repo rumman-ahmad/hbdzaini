@@ -127,8 +127,11 @@ function BirthdayApp() {
           <p className="bd-login-kicker">CASE NO. 15·09·08</p>
           <div className="bd-login-lock" aria-hidden="true"><span /></div>
           <h1 id="access-title">IDENTITY CHECK</h1>
-          <p className="bd-login-copy">Enter your date of birth to access the investigation file.</p>
+          <p className="bd-login-copy">Enter your date of birth as the password to access the investigation file.</p>
 
+          {checking ? (
+            <p className="bd-login-checking" role="status">Verifying clearance… 🕵️</p>
+          ) : (
           <form className="bd-login-form" onSubmit={handleUnlock}>
             <label htmlFor="birthday-name">Suspect&apos;s full name</label>
             <input
