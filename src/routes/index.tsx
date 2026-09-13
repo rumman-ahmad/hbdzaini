@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
   component: BirthdayApp,
 });
 
-const TOTAL_PAGES = 8;
+const TOTAL_PAGES = 9;
 
 type Burst = { id: number; x: number; y: number; char: string; color: string; dx: number; dy: number };
 
@@ -200,10 +200,11 @@ function BirthdayApp() {
         {page === 2 && <PageTwo goTo={goTo} />}
         {page === 3 && <PageThree goTo={goTo} burstAt={burstAt} />}
         {page === 4 && <PageFour goTo={goTo} />}
-        {page === 5 && <PageFive goTo={goTo} />}
-        {page === 6 && <PageSix goTo={goTo} />}
-        {page === 7 && <PageSeven onClick={() => goTo(8)} />}
-        {page === 8 && <PageEight />}
+        {page === 5 && <PageReview goTo={goTo} />}
+        {page === 6 && <PageFive goTo={goTo} />}
+        {page === 7 && <PageSix goTo={goTo} />}
+        {page === 8 && <PageSeven onClick={() => goTo(9)} />}
+        {page === 9 && <PageEight />}
       </main>
     </div>
   );
@@ -463,7 +464,7 @@ function PageFour({ goTo }: { goTo: (n: number) => void }) {
         <>
           <p className="bd-tiny">Wait... any of these hurt, but D made my day! 🐥</p>
           <button className="bd-btn bd-jelly" onClick={() => goTo(5)}>
-            I HAVE SEEN ENOUGH ➜
+            TIME FOR YOUR HONEST REVIEW ➜
           </button>
         </>
       )}
