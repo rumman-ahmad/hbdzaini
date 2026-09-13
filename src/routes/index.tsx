@@ -617,7 +617,7 @@ function PageFive({ goTo }: { goTo: (n: number) => void }) {
             </div>
           ))}
           <p className="bd-tiny">⚠️ Warning: 100% accurate. Handle with care.</p>
-          <button className="bd-btn bd-jelly" onClick={() => goTo(6)}>
+          <button className="bd-btn bd-jelly" onClick={() => goTo(7)}>
             OKAY OKAY... ENOUGH ROASTING 😅
           </button>
         </div>
@@ -660,7 +660,7 @@ function PageSix({ goTo }: { goTo: (n: number) => void }) {
 
       <div className="bd-ribbon">You deserve all the happiness in the world! ⭐</div>
 
-      <button className="bd-btn bd-jelly" onClick={() => goTo(7)}>
+      <button className="bd-btn bd-jelly" onClick={() => goTo(8)}>
         ONE LAST THING... ➜
       </button>
     </section>
