@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
   component: BirthdayApp,
 });
 
-const TOTAL_PAGES = 8;
+const TOTAL_PAGES = 9;
 
 type Burst = { id: number; x: number; y: number; char: string; color: string; dx: number; dy: number };
 
@@ -200,10 +200,11 @@ function BirthdayApp() {
         {page === 2 && <PageTwo goTo={goTo} />}
         {page === 3 && <PageThree goTo={goTo} burstAt={burstAt} />}
         {page === 4 && <PageFour goTo={goTo} />}
-        {page === 5 && <PageFive goTo={goTo} />}
-        {page === 6 && <PageSix goTo={goTo} />}
-        {page === 7 && <PageSeven onClick={() => goTo(8)} />}
-        {page === 8 && <PageEight />}
+        {page === 5 && <PageReview goTo={goTo} />}
+        {page === 6 && <PageFive goTo={goTo} />}
+        {page === 7 && <PageSix goTo={goTo} />}
+        {page === 8 && <PageSeven onClick={() => goTo(9)} />}
+        {page === 9 && <PageEight />}
       </main>
     </div>
   );
@@ -463,9 +464,88 @@ function PageFour({ goTo }: { goTo: (n: number) => void }) {
         <>
           <p className="bd-tiny">Wait... any of these hurt, but D made my day! 🐥</p>
           <button className="bd-btn bd-jelly" onClick={() => goTo(5)}>
-            I HAVE SEEN ENOUGH ➜
+            TIME FOR YOUR HONEST REVIEW ➜
           </button>
         </>
+      )}
+    </section>
+  );
+}
+
+/* ---------------- Page 5 (Review) ---------------- */
+function PageReview({ goTo }: { goTo: (n: number) => void }) {
+  const [review, setReview] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [shakeForm, setShakeForm] = useState(false);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!review.trim()) {
+      setShakeForm(true);
+      window.setTimeout(() => setShakeForm(false), 500);
+      return;
+    }
+    setSubmitted(true);
+  }
+
+  return (
+    <section className="bd-page p4 dark">
+      <div className="bd-sticker note">
+        BE HONEST
+        <br />
+        <small>(he can handle it... maybe)</small>
+      </div>
+      <p className="bd-eyebrow">💌 TOP SECRET REVIEW — FOR YOUR EYES ONLY</p>
+      <h1 className="bd-wobble">RUMMAN: FRIEND OR MENACE?</h1>
+
+      {!submitted ? (
+        <form
+          className={`bd-review ${shakeForm ? "shake" : ""}`}
+          onSubmit={handleSubmit}
+          aria-label="Your honest review about Rumman"
+        >
+          <p className="bd-review-questions">
+            Is Rumman really a good friend or a bad friend? Tell your heartly reviews about him —
+            as a friend or a bestie. Does he really deserve you? Or is he toxic? Tell with honesty:
+            how do you feel with him from November 2024 till now?
+          </p>
+          <label htmlFor="rumman-review">Your honest review</label>
+          <textarea
+            id="rumman-review"
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            placeholder="Type with full honesty... no mercy, no lies. 🕵️"
+            rows={7}
+            maxLength={1200}
+          />
+          <p className="bd-tiny">Rumman can&apos;t see this page. Pinky promise. 🤫</p>
+          <button className="bd-btn bd-jelly" type="submit">
+            SEAL MY REVIEW 🔒
+          </button>
+        </form>
+      ) : (
+        <div className="bd-review-done" role="status">
+          <div className="bd-review-bear-wrap">
+            <img className="bd-wish-bear bear-giggle" src={bearGiggle} alt="" width={768} height={768} />
+            <img className="bd-wish-bear bear-party" src={bearParty} alt="" width={768} height={768} />
+          </div>
+          <h2 className="bd-review-title">REVIEW SEALED. CASE CLOSED. 🔒</h2>
+          <p className="bd-review-answered">
+            <small>Your official testimony:</small>
+            <q>{review.trim()}</q>
+          </p>
+          <div className="bd-review-screenshot">
+            <span className="bd-ss-icon" aria-hidden="true">📸</span>
+            <p>
+              <strong>Screenshot this!</strong> Rumman can&apos;t see this page — so send him your
+              review about him. Let him read it and sweat a little. 😈
+            </p>
+          </div>
+          <p className="bd-tiny">(Seriously — he will never find this page. It&apos;s your secret evidence.)</p>
+          <button className="bd-btn bd-jelly" onClick={() => goTo(6)}>
+            CONTINUE THE INVESTIGATION ➜
+          </button>
+        </div>
       )}
     </section>
   );
