@@ -38,9 +38,27 @@ type Burst = { id: number; x: number; y: number; char: string; color: string; dx
 const CONFETTI_COLORS = ["#ff3f78", "#7040d9", "#ffd85c", "#4d9de0", "#5fc98a"];
 
 function BirthdayApp() {
-  const initialAccess = Route.useLoaderData();
+  Route.useLoaderData();
   const unlock = useServerFn(unlockBirthday);
-  const [unlocked, setUnlocked] = useState(initialAccess.unlocked);
+  const checkAccess = useServerFn(getBirthdayAccess);
+  const [unlocked, setUnlocked] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    checkAccess()
+      .then((result) => {
+        if (!cancelled && result.unlocked) setUnlocked(true);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setChecking(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [unlocking, setUnlocking] = useState(false);
   const [accessError, setAccessError] = useState("");
   const [page, setPage] = useState(1);
