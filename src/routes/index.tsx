@@ -7,7 +7,7 @@ import bearParty from "@/assets/bear-party.png";
 import { getBirthdayAccess, unlockBirthday } from "@/lib/birthday-access.functions";
 
 export const Route = createFileRoute("/")({
-  loader: () => getBirthdayAccess(),
+  loader: () => ({ unlocked: false }),
   head: () => ({
     meta: [
       { title: "Zainab's Birthday Investigation — A Top Secret Surprise" },
@@ -38,9 +38,27 @@ type Burst = { id: number; x: number; y: number; char: string; color: string; dx
 const CONFETTI_COLORS = ["#ff3f78", "#7040d9", "#ffd85c", "#4d9de0", "#5fc98a"];
 
 function BirthdayApp() {
-  const initialAccess = Route.useLoaderData();
+  Route.useLoaderData();
   const unlock = useServerFn(unlockBirthday);
-  const [unlocked, setUnlocked] = useState(initialAccess.unlocked);
+  const checkAccess = useServerFn(getBirthdayAccess);
+  const [unlocked, setUnlocked] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    checkAccess()
+      .then((result) => {
+        if (!cancelled && result.unlocked) setUnlocked(true);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setChecking(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [unlocking, setUnlocking] = useState(false);
   const [accessError, setAccessError] = useState("");
   const [page, setPage] = useState(1);
@@ -109,8 +127,11 @@ function BirthdayApp() {
           <p className="bd-login-kicker">CASE NO. 15·09·08</p>
           <div className="bd-login-lock" aria-hidden="true"><span /></div>
           <h1 id="access-title">IDENTITY CHECK</h1>
-          <p className="bd-login-copy">Enter your date of birth to access the investigation file.</p>
+          <p className="bd-login-copy">Enter your date of birth as the password to access the investigation file.</p>
 
+          {checking ? (
+            <p className="bd-login-checking" role="status">Verifying clearance… 🕵️</p>
+          ) : (
           <form className="bd-login-form" onSubmit={handleUnlock}>
             <label htmlFor="birthday-name">Suspect&apos;s full name</label>
             <input
