@@ -129,10 +129,12 @@ function BirthdayApp() {
           <h1 id="access-title">IDENTITY CHECK</h1>
           <p className="bd-login-copy">Enter your date of birth as the password to access the investigation file.</p>
 
-          {checking ? (
+          {checking && (
             <p className="bd-login-checking" role="status">Verifying clearance… 🕵️</p>
-          ) : (
-          <form className="bd-login-form" onSubmit={handleUnlock}>
+          )}
+
+          {!checking && (
+            <form className="bd-login-form" onSubmit={handleUnlock}>
             <label htmlFor="birthday-name">Suspect&apos;s full name</label>
             <input
               id="birthday-name"
