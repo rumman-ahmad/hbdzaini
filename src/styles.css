@@ -555,3 +555,10 @@
 @media (prefers-reduced-motion: reduce) {
   .bd-root *, .bd-root *::before, .bd-root *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
+
+.bd-login-checking {
+  margin: 18px 0;
+  font-weight: 700;
+  color: var(--bd-pink, #ff3f78);
+  animation: bdWobble 1.2s ease-in-out infinite;
+}
