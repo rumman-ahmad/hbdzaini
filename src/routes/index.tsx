@@ -145,7 +145,7 @@ function BirthdayApp() {
               disabled={unlocking}
             />
 
-            <label htmlFor="birthday-dob">Date of birth</label>
+            <label htmlFor="birthday-dob">Password</label>
             <input
               id="birthday-dob"
               name="dateOfBirth"
@@ -168,6 +168,7 @@ function BirthdayApp() {
               {unlocking ? "UNLOCKING FILE... 🔎" : "ACCESS INVESTIGATION FILE 🔍"}
             </button>
           </form>
+          )}
           <p className="bd-login-warning">⚠ Authorized birthday girl only. Intruders will be dramatically judged.</p>
         </section>
       </main>
